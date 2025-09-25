@@ -1,26 +1,41 @@
+import json
+import re
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyCh6m3BL5fg7u4-b3iIpK7lNByqpLoSvB4")
+genai.configure(api_key="")
 
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-2.5-flash-lite")
 
 prompt = """You are an AI career coach. 
 I will give you a list of technical skills that a user already has. 
 Optionally, I may also provide a preferred learning path (like "Data Science", "Web Development", or "Cloud"). 
 
 Your task:
-- Suggest ONE most valuable next Programming skill.
-- Always return both the Learning Path and the Programming Skill.
-- If the Learning Path is provided, keep it and only suggest the Programming skill.
-- If the Learning Path is empty, suggest both a suitable Learning Path and a Programming Skill.
-- If both User Programming Skills and Learning Path are empty, suggest both a suitable Learning Path and a starting Skill.
+- Suggest ONE most valuable next skill.
+- Always return both the Learning Path and the Skill in JSON format.
+- If the Learning Path is provided, keep it and only suggest the skill.
+- If the Learning Path is empty, suggest both a suitable Learning Path and a Skill.
+- If both User Skills and Learning Path are empty, suggest both a suitable Learning Path and a starting Skill.
 
-Format your response strictly as:
-Learning Path: <learning_path>
-Skill: <skill>
+Format your response strictly as JSON:
+{
+  "learning_path": "<learning_path>",
+  "skill": "<skill>"
+}
 
-User skills: None
-Learning path: None
+User skills: [Python, SQL]
+Learning path: Data Science
 """
+# response = model.generate_content(prompt)
+# print(response.text.strip()) 
+ 
 response = model.generate_content(prompt)
-print(response.text.strip())
+
+raw_output = response.text.strip()
+
+# Remove Markdown code fences if they exist
+cleaned = re.sub(r"^```(?:json)?|```$", "", raw_output, flags=re.MULTILINE).strip()
+
+result = json.loads(cleaned)
+print(result["learning_path"])
+print(result["skill"])
