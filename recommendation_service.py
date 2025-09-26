@@ -1,9 +1,12 @@
 import json
+import os
 import re
+from dotenv import load_dotenv
 import google.generativeai as genai
 
-genai.configure(api_key="")
-
+load_dotenv()
+gemini_api_key = os.environ.get("GEMINI_API_KEY")
+genai.configure(api_key=gemini_api_key)
 model = genai.GenerativeModel("gemini-2.5-flash-lite")
 
 prompt = """You are an AI career coach. 

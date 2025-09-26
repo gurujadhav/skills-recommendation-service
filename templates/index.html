@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Talent Bridge</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
   </head>
 
   <body>
@@ -39,6 +40,9 @@
 
         <label for="learning_path">Learning Path</label>
         <input type="text" id="learning_path" placeholder="Data Science" />
+
+        <!-- <label for="username">UserName</label>
+        <input type="text" id="username" placeholder="johnDoe1234" /> -->
 
         <button type="submit">Add User</button>
       </form>
